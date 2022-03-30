@@ -1,11 +1,12 @@
 import { getUser } from "./services/getUsers.js";
 import { makeDiv, makeImg } from "./services/helpers.js";
+import { saveUser } from "./user-management.js";
 
 const container = document.getElementById("container");
 const getUsersButton = document.getElementById("getUser");
 const hideAdress = document.getElementById("hide");
 
-let showLocation = true
+let showLocation = true;
 
 const createUser = ({
   name,
@@ -15,35 +16,34 @@ const createUser = ({
   nationality,
   locationAdress,
   locationCountry,
- 
 }) => {
-	
-    container.append(
+  container.append(
     makeImg(img),
-	makeDiv(name),
+    makeDiv(name),
     makeDiv(lastName),
     makeDiv(lastName),
     makeDiv(registerData),
     makeDiv(nationality),
-    ...(showLocation === true ? 
-    [makeDiv(locationAdress),
-    makeDiv(locationCountry)]
-	: [])
-    
+    ...(showLocation === true
+      ? [makeDiv(locationAdress), makeDiv(locationCountry)]
+      : [])
   );
+  
   return container;
+  
 };
 
-const update = () =>{
-    container.innerHTML = "";
-    getUser().then(createUser)
-}
+const update = () => {
+  container.innerHTML = "";
+  getUser().then(saveUser);
+  getUser().then(createUser);
+  
 
-hideAdress.addEventListener("click", function(){
-showLocation = !showLocation
-})
-
-getUsersButton.addEventListener("click", ()=> update());
+};
 
 
+hideAdress.addEventListener("click", function () {
+  showLocation = !showLocation;
+});
 
+getUsersButton.addEventListener("click", () => update());
